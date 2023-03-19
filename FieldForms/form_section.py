@@ -239,6 +239,3 @@ class ToursFormLocators(BaseMethods):
 
     def random_select_cities_and_check_the_search_button(self):
         self.assert_elements_exist(CountryAndCities.SEARCH_COUNTRY_AND_CITIES_BUTTON)
-
-
-

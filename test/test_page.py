@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from VOTPUSK.Header.header_info import HeaderLocators
 from VOTPUSK.Config.TestData import TestData
@@ -163,11 +165,81 @@ class TestPage(BaseTest):
         check_the_block_of_articles.check_the_block_of_articles()
         scroll_and_check_the_blocks_container = SliderSection(driver)
         scroll_and_check_the_blocks_container.scroll_and_check_the_blocks_container()
+        scroll_and_check_the_blocks_container = SliderSection(driver)
+        scroll_and_check_the_blocks_container.scroll_and_check_the_blocks_container()
+        check_all_item_container = SliderSection(driver)
+        check_all_item_container.check_all_item_container()
+        check_all_article_item = SliderSection(driver)
+        check_all_article_item.check_all_article_item()
+        check_form_block = SliderSection(driver)
+        check_form_block.check_form_block()
+        do_random_select_country_city_themes = SliderSection(driver)
+        do_random_select_country_city_themes.do_random_select_country_city_themes()
+        check_articles_search_hutton = SliderSection(driver)
+        check_articles_search_hutton.check_articles_search_hutton()
 
+    def test_attractions_container(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_attractions_blocks = SliderSection(driver)
+        scroll_to_attractions_blocks.scroll_to_attractions_blocks()
+        check_the_attractions_block = SliderSection(driver)
+        check_the_attractions_block.check_the_attractions_block()
+        check_the_all_container_attraction = SliderSection(driver)
+        check_the_all_container_attraction.check_the_all_container_attraction()
+        click_next_and_check_container_all_container = SliderSection(driver)
+        click_next_and_check_container_all_container.click_next_and_check_container_all_container()
+        click_next_again_and_check_container_all_container = SliderSection(driver)
+        click_next_again_and_check_container_all_container.click_next_again_and_check_container_all_container()
 
+    def test_hotel_slider_option(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_hotel_sliders = SliderSection(driver)
+        scroll_to_hotel_sliders.scroll_to_hotel_sliders()
+        check_the_hotel_container = SliderSection(driver)
+        check_the_hotel_container.check_the_hotel_container()
+        click_next_and_check_the_container_again = SliderSection(driver)
+        click_next_and_check_the_container_again.click_next_and_check_the_container_again()
+        check_the_reservation_link = SliderSection(driver)
+        check_the_reservation_link.check_the_reservation_link()
 
+    def test_train_slider_option(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_train_section = SliderSection(driver)
+        scroll_to_train_section.scroll_to_train_section()
+        check_the_train_container = SliderSection(driver)
+        check_the_train_container.check_the_train_face_blocks()
+        check_the_reservation_train_link = SliderSection(driver)
+        check_the_reservation_train_link.check_the_reservation_train_link()
 
+    def test_news_option(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_news = SliderSection(driver)
+        scroll_to_news.scroll_to_news()
+        check_the_all_container_box = SliderSection(driver)
+        check_the_all_container_box.check_the_all_container_box()
+        check_the_each_container = SliderSection(driver)
+        check_the_each_container.check_the_each_container()
+        check_the_each_blocks_news = SliderSection(driver)
+        check_the_each_blocks_news.check_the_each_blocks_news()
+        check_the_block_links = SliderSection(driver)
+        check_the_block_links.check_the_block_links()
 
+    def test_other_delay(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_other_delay = SliderSection(driver)
+        scroll_to_other_delay.scroll_to_other_delay()
+        check_other_delay_container = SliderSection(driver)
+        check_other_delay_container.check_other_delay_container()
+        check_each_blocks = SliderSection(driver)
+        check_each_blocks.check_each_blocks()
 
-
-
+    def test_comment_section(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_comment = SliderSection(driver)
+        scroll_to_comment.scroll_to_comment()
+        check_the_comment_container = SliderSection(driver)
+        check_the_comment_container.check_the_comment_container()
+        check_the_write_comment_button = SliderSection(driver)
+        check_the_write_comment_button.check_the_write_comment_button()
+        check_and_click_navigation_arrow = SliderSection(driver)
+        check_and_click_navigation_arrow.check_and_click_navigation_arrow()

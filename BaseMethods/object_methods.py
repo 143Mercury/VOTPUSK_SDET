@@ -5,7 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException, \
+    ElementNotInteractableException, ElementNotVisibleException
 from selenium.webdriver.common.keys import Keys
 
 
@@ -25,9 +26,18 @@ class BaseMethods(BasePage):
                 EC.element_to_be_clickable(by_locator)
             )
             element.click()
+            print(f"Clicked on element with locator: {by_locator}")
+            return True
+        except TimeoutException:
+            print(f"TimeoutException: Failed to click on element with locator: {by_locator}")
+            return False
+        except ElementNotInteractableException:
+            print(f"ElementNotInteractableException: Failed to click on element with locator: {by_locator}")
+            return False
         except Exception as e:
-            print("Test should to be able to pass")
+            print(f"Unknown Exception: Failed to click on element with locator: {by_locator}")
             print(e)
+            return False
 
     def send_keys_to_element(self, by_locator, keys):
         try:
@@ -55,10 +65,6 @@ class BaseMethods(BasePage):
             action.double_click(element).perform()
         else:
             element.click()
-
-    def click_element_nw(self, by_locator):
-        element = self.driver.find_element(by_locator)
-        element.click()
 
     def assert_element_visibility(self, by_locator, timeout=15):
         try:
@@ -268,7 +274,7 @@ class BaseMethods(BasePage):
         script = f"window.scrollBy(0, {scroll_by})"
         self.driver.execute_script(script)
 
-    def scroll_page_туцы(self, scroll_by=3525):
+    def scroll_page_news(self, scroll_by=3525):
         script = f"window.scrollBy(0, {scroll_by})"
         self.driver.execute_script(script)
 
@@ -392,9 +398,27 @@ class BaseMethods(BasePage):
             except TimeoutException:
                 break
 
-    def is_element_present(self, by_locator):
+    def is_element_present(self, by_locator, timeout=15):
         try:
-            element = self.driver.find_element(*by_locator)
-            return element.is_displayed()
-        except NoSuchElementException:
-            return False
+            wait = WebDriverWait(self.driver, timeout)
+            element = wait.until(EC.presence_of_element_located(by_locator))
+            assert element.is_displayed(), f"Элемент {by_locator} найден, но не отображается"
+            assert element.is_enabled(), f"Элемент {by_locator} найден, но не активен"
+            return True
+        except TimeoutException:
+            assert False, f"Элемент {by_locator} не найден за {timeout} секунд"
+        except (NoSuchElementException, ElementNotVisibleException):
+            assert False, f"Элемент {by_locator} не найден"
+
+    def click_in_loop4(self, locator):
+        for i in range(4):
+            element = self.driver.find_element(*locator)
+            element.click()
+
+    def sleep(self, seconds=5):
+        time.sleep(seconds)
+
+
+
+
+
