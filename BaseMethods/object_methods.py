@@ -114,10 +114,19 @@ class BaseMethods(BasePage):
             assert False, f"Элемент {by_locator} не найден на странице после {timeout} секунд ожидания"
 
     def is_visible(self, by_locator):
-        element = WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located(by_locator)
-        )
-        return bool(element)
+        try:
+            element = WebDriverWait(self.driver, 10).until(
+                EC.visibility_of_element_located(by_locator)
+            )
+            assert element.is_displayed() and element.is_enabled()
+            WebDriverWait(self.driver, 10).until(
+                lambda driver: self.driver.execute_script('return document.readyState') == 'complete'
+            )
+            return True
+        except TimeoutException:
+            return False
+        except AssertionError:
+            return False
 
     def scroll_page(self, scroll_by=300):
         script = f"window.scrollBy(0, {scroll_by})"
@@ -290,6 +299,14 @@ class BaseMethods(BasePage):
         script = f"window.scrollBy(0, {scroll_by})"
         self.driver.execute_script(script)
 
+    def scroll_page_articles_form(self, scroll_by=450):
+        script = f"window.scrollBy(0, {scroll_by})"
+        self.driver.execute_script(script)
+
+    def scroll_page_news_articles(self, scroll_by=900):
+        script = f"window.scrollBy(0, {scroll_by})"
+        self.driver.execute_script(script)
+
     def check_container_blocks_with_arrows(self, container_locator, next_arrow_locator, prev_arrow_locator, timeout=10):
         try:
             # Ожидаем появления контейнера
@@ -418,7 +435,25 @@ class BaseMethods(BasePage):
     def sleep(self, seconds=5):
         time.sleep(seconds)
 
+    def is_dropdown_present(self, by_locator):
+        try:
+            wait = WebDriverWait(self.driver, 10)
+            dropdown = wait.until(EC.presence_of_element_located(by_locator))
+            assert dropdown.is_displayed(), f"Выпадающий список {by_locator} найден, но не отображается"
+            return True
+        except (NoSuchElementException, TimeoutException):
+            assert False, f"Выпадающий список {by_locator} не найден"
 
-
+    def window_scroll_by(self, x, y):
+        """
+        Scrolls the window by the given x and y values.
+        """
+        try:
+            # Get the current window position
+            current_position = self.driver.execute_script("return window.pageYOffset;")
+            # Scroll the window to the desired position
+            self.driver.execute_script("window.scrollTo({}, {});".format(current_position + x, current_position + y))
+        except Exception as e:
+            print("Error while scrolling window:", e)
 
 

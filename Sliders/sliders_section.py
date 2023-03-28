@@ -3,8 +3,6 @@ import time
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from VOTPUSK.BaseMethods.object_methods import BaseMethods
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 
 class SliderSection(BaseMethods):
