@@ -113,19 +113,28 @@ class BaseMethods(BasePage):
         except TimeoutException:
             assert False, f"Элемент {by_locator} не найден на странице после {timeout} секунд ожидания"
 
-    def is_visible(self, by_locator):
+    def is_visible(self, by_locator, expected_text=None, expected_attribute=None, expected_attribute_value=None):
         try:
             element = WebDriverWait(self.driver, 10).until(
                 EC.visibility_of_element_located(by_locator)
             )
             assert element.is_displayed() and element.is_enabled()
+
+            if expected_text is not None:
+                assert element.text == expected_text, f"Expected text: '{expected_text}', Actual text: '{element.text}'"
+
+            if expected_attribute is not None and expected_attribute_value is not None:
+                actual_attribute_value = element.get_attribute(expected_attribute)
+                assert actual_attribute_value == expected_attribute_value, f"Expected attribute value: '{expected_attribute_value}', Actual attribute value: '{actual_attribute_value}'"
+
             WebDriverWait(self.driver, 10).until(
                 lambda driver: self.driver.execute_script('return document.readyState') == 'complete'
             )
             return True
         except TimeoutException:
             return False
-        except AssertionError:
+        except AssertionError as e:
+            print(f"AssertionError: {e}")
             return False
 
     def scroll_page(self, scroll_by=300):
@@ -143,8 +152,15 @@ class BaseMethods(BasePage):
     def click_random_enabled_day_in_calendar(self, calendar_locator):
         # кликнуть на локатор виджета календаря
         self.driver.find_element(*calendar_locator).click()
+
+        # Ожидание, пока календарь станет видимым
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".ui-datepicker-calendar"))
+        )
+
         # найти все элементы в календаре, имеющие тег "td"
         day_elements = self.driver.find_elements(By.CSS_SELECTOR, ".ui-datepicker-calendar td")
+
         # создать список кликабельных чисел
         enabled_days = []
         for day in day_elements:
@@ -157,19 +173,21 @@ class BaseMethods(BasePage):
 
         # выбрать случайное число из списка кликабельных чисел
         random_day = None
+        start_time = time.time()
         while not random_day:
             random_day = random.choice(enabled_days)
             if "ui-state-disabled" in random_day.get_attribute("class"):
                 random_day = None
                 time.sleep(1)
+            # Прекратить проверку, если прошло слишком много времени
+            if time.time() - start_time > 10:
+                raise TimeoutException("Unable to find a clickable day within the given time.")
 
         # кликнуть на выбранное число
         random_day.click()
 
     def select_random_option_from_dropdown(self, dropdown_element):
         """Selects a random option from a given dropdown menu element"""
-        # Click on the dropdown menu to open it
-        dropdown_element.click()
 
         # Get all available options in the dropdown
         options = dropdown_element.find_elements_by_tag_name("option")
@@ -201,6 +219,7 @@ class BaseMethods(BasePage):
                 break
 
     def do_randint_click(self, by_locator, count=5, scroll=False):
+        max_clicks = 6
         for i in range(count):
             try:
                 elements = WebDriverWait(self.driver, 5).until(EC.presence_of_all_elements_located(by_locator))
@@ -209,6 +228,8 @@ class BaseMethods(BasePage):
                     self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
                 element.click()
                 WebDriverWait(self.driver, 5).until(EC.staleness_of(element))
+                if i + 1 >= max_clicks:
+                    raise Exception("Было сделано больше 6 кликов по элементу")
             except (StaleElementReferenceException, TimeoutException):
                 pass
 
@@ -415,7 +436,7 @@ class BaseMethods(BasePage):
             except TimeoutException:
                 break
 
-    def is_element_present(self, by_locator, timeout=15):
+    def is_element_present(self, by_locator, timeout=20):
         try:
             wait = WebDriverWait(self.driver, timeout)
             element = wait.until(EC.presence_of_element_located(by_locator))
@@ -456,4 +477,47 @@ class BaseMethods(BasePage):
         except Exception as e:
             print("Error while scrolling window:", e)
 
+    def assert_same_locator_elements(self, locator):
+        elements = self.driver.find_elements(*locator)
+        if len(elements) == 0:
+            raise AssertionError(f"No elements found with locator: {locator}")
+        if len(elements) > 8:
+            raise AssertionError(f"More than 8 elements found with locator: {locator}")
+        for element in elements:
+            if not element.is_displayed():
+                raise AssertionError(f"Element not displayed with locator: {locator}")
+            if not element.is_enabled():
+                raise AssertionError(f"Element not enabled with locator: {locator}")
+            if not element.is_selected():
+                raise AssertionError(f"Element not selected with locator: {locator}")
 
+    def check_heading_text(self, expected_text, tags=("h1", "h2", "h3", "h4", "h5", "h6")):
+        # Ожидание, пока хотя бы один заголовок станет видимым
+        def any_heading_visible(driver):
+            visible_headings = []
+            for tag in tags:
+                visible_headings.extend(
+                    [element for element in driver.find_elements(By.TAG_NAME, tag) if element.is_displayed()])
+                if visible_headings:
+                    return True
+            return False
+
+        WebDriverWait(self.driver, 10).until(any_heading_visible)
+
+        # Найти все элементы заголовков с указанными тегами
+        heading_elements = []
+        for tag in tags:
+            heading_elements.extend(self.driver.find_elements(By.TAG_NAME, tag))
+
+        # Если не найдено ни одного элемента заголовка, выбросить исключение
+        if not heading_elements:
+            raise NoSuchElementException(f"No heading elements with the specified tags found: {tags}")
+
+        # Проверить текст каждого найденного элемента заголовка
+        for heading in heading_elements:
+            if heading.text == expected_text:
+                return True
+
+        # Если ни один из элементов заголовка не содержит ожидаемый текст, выбросить исключение
+        raise AssertionError(
+            f"Expected text '{expected_text}' not found in any of the heading elements with tags {tags}")
