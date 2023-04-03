@@ -5,7 +5,7 @@ from VOTPUSK.Hotel_main.config.configuration import TestData
 from VOTPUSK.Hotel_main.hotel_functionality.form.hotel_func_form import HotelForm
 from VOTPUSK.Hotel_main.hotel_functionality.sliders_and_links_functionality.hotel_sliders_func_links import \
     SlidersHotelLinksLocator
-from VOTPUSK.test.TestBase import BaseTest
+from VOTPUSK.Main.test.TestBase import BaseTest
 
 
 class TestHotel(BaseTest):
@@ -71,3 +71,16 @@ class TestHotel(BaseTest):
         check_comment_data.check_comment_data()"""
         assert_navigation_arrows_clickable = SlidersHotelLinksLocator(driver)
         assert_navigation_arrows_clickable.assert_navigation_arrows_clickable()
+
+    def test_faq_hotel(self, driver):
+        driver.get(TestData.URL)
+        scroll_to_FAQ = SlidersHotelLinksLocator(driver)
+        scroll_to_FAQ.scroll_to_FAQ()
+        check_response_container = SlidersHotelLinksLocator(driver)
+        check_response_container.check_response_container()
+        check_adjust_blocks = SlidersHotelLinksLocator(driver)
+        check_adjust_blocks.check_adjust_blocks()
+        checking_clickable_faq = SlidersHotelLinksLocator(driver)
+        checking_clickable_faq.checking_clickable_faq()
+        check_hotel_faq_link_under_line = SlidersHotelLinksLocator(driver)
+        check_hotel_faq_link_under_line.check_hotel_faq_link_under_line()

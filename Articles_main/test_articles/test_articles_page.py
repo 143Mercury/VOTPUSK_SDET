@@ -3,7 +3,7 @@ import time
 from VOTPUSK.Articles_main.articles_sliders.comment_section import CommentLocator
 from VOTPUSK.Articles_main.articles_sliders.topic_blocks import TopicBlocks
 from VOTPUSK.Articles_main.field_articles_forms.articles_form import ArticlesFormLocators
-from VOTPUSK.test.TestBase import BaseTest
+from VOTPUSK.Main.test.TestBase import BaseTest
 from VOTPUSK.Articles_main.article_header.articles_header import ArticleHeaderLocator
 from VOTPUSK.Articles_main.config.Config import TestData
 from VOTPUSK.Articles_main.articles_sliders.articles_slider import ArticlesSliderLocators

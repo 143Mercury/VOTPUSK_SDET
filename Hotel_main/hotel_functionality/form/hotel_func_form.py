@@ -41,7 +41,7 @@ class HotelForm(BaseMethods):
         self.click_element(HotelForm.HOTEL_FORM_INPUT)
 
     def select_randomly_check_in_date(self):
-        time.sleep(1)
+        time.sleep(3)
         self.is_element_present(HotelForm.HOTEL_CHECK_IN)
         self.click_random_enabled_day_in_calendar(HotelForm.HOTEL_CHECK_IN)
         self.is_visible(HotelForm.CHECK_IN_TEXT)
