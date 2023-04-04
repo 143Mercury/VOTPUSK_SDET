@@ -521,3 +521,7 @@ class BaseMethods(BasePage):
         # Если ни один из элементов заголовка не содержит ожидаемый текст, выбросить исключение
         raise AssertionError(
             f"Expected text '{expected_text}' not found in any of the heading elements with tags {tags}")
+
+    def move_slider(self, slider, offset_x, offset_y):
+        action = ActionChains(self.driver)
+        action.click_and_hold(slider).move_by_offset(offset_x, offset_y).release().perform()
