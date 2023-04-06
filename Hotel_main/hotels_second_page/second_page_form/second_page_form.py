@@ -25,6 +25,7 @@ class SecondFormLocators(BaseMethods):
 
 # Проверка работоспособности функционала внутренней формы поиска отелей
     def check_the_form_visibility(self):
+        self.page_loaded(SecondFormLocators.FROM_FIELD_BLOCK)
         self.is_element_present(SecondFormLocators.FROM_FIELD_BLOCK)
 
     def clear_default_value_and_assert_the_len(self):

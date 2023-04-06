@@ -1,6 +1,6 @@
 import random
 import time
-from selenium import webdriver
+from functools import wraps
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
@@ -453,8 +453,16 @@ class BaseMethods(BasePage):
             element = self.driver.find_element(*locator)
             element.click()
 
-    def sleep(self, seconds=5):
-        time.sleep(seconds)
+    def sleep(self, seconds=5, randomize=False, min_seconds=None, max_seconds=None):
+        if randomize:
+            if min_seconds is None:
+                min_seconds = 1
+            if max_seconds is None:
+                max_seconds = seconds * 2
+            sleep_time = random.uniform(min_seconds, max_seconds)
+        else:
+            sleep_time = seconds
+        time.sleep(sleep_time)
 
     def is_dropdown_present(self, by_locator):
         try:
@@ -470,10 +478,12 @@ class BaseMethods(BasePage):
         Scrolls the window by the given x and y values.
         """
         try:
-            # Get the current window position
-            current_position = self.driver.execute_script("return window.pageYOffset;")
+            # Wait for the page to load completely
+            wait = WebDriverWait(self.driver, 10)
+            wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, 'body')))
+
             # Scroll the window to the desired position
-            self.driver.execute_script("window.scrollTo({}, {});".format(current_position + x, current_position + y))
+            self.driver.execute_script("window.scrollTo(arguments[0], arguments[1]);", x, y)
         except Exception as e:
             print("Error while scrolling window:", e)
 
@@ -525,3 +535,20 @@ class BaseMethods(BasePage):
     def move_slider(self, slider, offset_x, offset_y):
         action = ActionChains(self.driver)
         action.click_and_hold(slider).move_by_offset(offset_x, offset_y).release().perform()
+
+    def page_loaded(self, locator, timeout=10):
+        """
+        Явное ожидание элемента на странице.
+        :param locator: кортеж с двумя значениями (By.<метод>, '<селектор>')
+        :param timeout: время ожидания в секундах (по умолчанию 10)
+        :return: найденный элемент
+        """
+        try:
+            element = WebDriverWait(self.driver, timeout).until(
+                EC.presence_of_element_located(locator)
+            )
+            return element
+        except Exception as e:
+            print(f"Error while waiting for element {locator}: {e}")
+            return None
+
