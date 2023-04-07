@@ -253,3 +253,4 @@ class FiltersLocators(BaseMethods):
         self.sleep(1)
         self.is_element_present(FiltersLocators.AMENITIES_IN_THE_ROOM_HIDDEN_LINK)
         self.assert_element_to_be_clickable(FiltersLocators.AMENITIES_IN_THE_ROOM_HIDDEN_LINK)
+

@@ -39,22 +39,22 @@ class SecondFormLocators(BaseMethods):
         time.sleep(2)
 
     def select_check_out(self):
+        self.page_loaded(SecondFormLocators.CHECK_OUT)
         self.is_element_present(SecondFormLocators.CHECK_OUT)
         self.click_random_enabled_day_in_calendar(SecondFormLocators.CHECK_OUT)
-        time.sleep(2)
 
     def select_dropdown_quantity(self):
+        self.page_loaded(SecondFormLocators.DROPDOWN_QUANTITY)
         self.is_element_present(SecondFormLocators.DROPDOWN_QUANTITY)
         self.click_element(SecondFormLocators.DROPDOWN_QUANTITY)
 
     def check_input_sign(self):
+        self.page_loaded(SecondFormLocators.INPUT_PLUS)
         self.is_visible(SecondFormLocators.INPUT_PLUS)
-        time.sleep(1)
         self.is_visible(SecondFormLocators.INPUT_MINUS)
 
     def randint_click(self):
         self.do_randint_click(SecondFormLocators.INPUT_PLUS)
-        time.sleep(1)
         self.do_randint_click(SecondFormLocators.INPUT_MINUS)
 
     def check_dropdown_quantity_kids(self):
