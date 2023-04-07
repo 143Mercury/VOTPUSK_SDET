@@ -1,6 +1,6 @@
 import time
 
-from VOTPUSK.BaseMethods.object_methods import BaseMethods
+from VOTPUSK_SDET.VOTPUSK.BaseMethods.object_methods import BaseMethods
 from selenium.webdriver.common.by import By
 
 

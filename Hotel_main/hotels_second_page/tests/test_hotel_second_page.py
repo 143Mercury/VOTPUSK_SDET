@@ -1,7 +1,7 @@
-from VOTPUSK.Hotel_main.hotels_second_page.hotel_filters.hotel_filters import FiltersLocators
-from test.TestBase import BaseTest
-from VOTPUSK.Hotel_main.hotels_second_page.second_page_form.second_page_form import SecondFormLocators
-from VOTPUSK.Hotel_main.hotels_second_page.config.configuration import TestDataSecondPage
+from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotels_second_page.hotel_filters.hotel_filters import FiltersLocators
+from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotels_second_page.tests.TestBase import BaseTest
+from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotels_second_page.second_page_form.second_page_form import SecondFormLocators
+from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotels_second_page.config.configuration import TestDataSecondPage
 
 
 class TestSecondHotelPage(BaseTest):

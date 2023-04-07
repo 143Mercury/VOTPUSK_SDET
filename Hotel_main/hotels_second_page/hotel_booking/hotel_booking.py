@@ -1,5 +1,5 @@
 from selenium.webdriver.common.by import By
-from VOTPUSK.BaseMethods.object_methods import BaseMethods
+from VOTPUSK_SDET.VOTPUSK.BaseMethods.object_methods import BaseMethods
 
 
 class HotelBookingOptions(BaseMethods):

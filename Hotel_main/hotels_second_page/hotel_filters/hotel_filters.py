@@ -1,8 +1,8 @@
 import time
 
 from selenium.webdriver.common.by import By
-from VOTPUSK.BaseMethods.object_methods import BaseMethods
-from VOTPUSK.Hotel_main.hotels_second_page.config.configuration import TestDataSecondPage
+from VOTPUSK_SDET.VOTPUSK.BaseMethods.object_methods import BaseMethods
+from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotels_second_page.config.configuration import TestDataSecondPage
 
 
 class FiltersLocators(BaseMethods):

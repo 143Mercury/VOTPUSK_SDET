@@ -1,15 +1,15 @@
 import time
 
-from VOTPUSK.Articles_main.articles_sliders.comment_section import CommentLocator
-from VOTPUSK.Articles_main.articles_sliders.topic_blocks import TopicBlocks
-from VOTPUSK.Articles_main.field_articles_forms.articles_form import ArticlesFormLocators
-from VOTPUSK.Main.test.TestBase import BaseTest
-from VOTPUSK.Articles_main.article_header.articles_header import ArticleHeaderLocator
-from VOTPUSK.Articles_main.config.Config import TestData
-from VOTPUSK.Articles_main.articles_sliders.articles_slider import ArticlesSliderLocators
-from VOTPUSK.Articles_main.articles_sliders.photo_sliders import PhotoSection
-from VOTPUSK.Articles_main.articles_sliders.attractions_slider import AttractionLocators
-from VOTPUSK.Articles_main.articles_sliders.what_to_see import WhatToSee
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.comment_section import CommentLocator
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.topic_blocks import TopicBlocks
+from VOTPUSK_SDET.VOTPUSK.Articles_main.field_articles_forms.articles_form import ArticlesFormLocators
+from VOTPUSK_SDET.VOTPUSK.Main.test.TestBase import BaseTest
+from VOTPUSK_SDET.VOTPUSK.Articles_main.article_header.articles_header import ArticleHeaderLocator
+from VOTPUSK_SDET.VOTPUSK.Articles_main.config.Config import TestData
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.articles_slider import ArticlesSliderLocators
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.photo_sliders import PhotoSection
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.attractions_slider import AttractionLocators
+from VOTPUSK_SDET.VOTPUSK.Articles_main.articles_sliders.what_to_see import WhatToSee
 
 
 class TestArticlesPage(BaseTest):

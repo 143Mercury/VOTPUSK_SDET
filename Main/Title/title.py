@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from VOTPUSK.BaseMethods.object_methods import BaseMethods
+from VOTPUSK_SDET.VOTPUSK.BaseMethods.object_methods import BaseMethods
 
 
 class TitleLocator(BaseMethods):
