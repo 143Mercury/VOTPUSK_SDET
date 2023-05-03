@@ -1,10 +1,10 @@
 import pytest
-from VOTPUSK_SDET.VOTPUSK.Main.Header.header_info import HeaderLocators
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestData import TestData
-from VOTPUSK_SDET.VOTPUSK.Main.Title.title import TitleLocator
-from VOTPUSK_SDET.VOTPUSK.Main.test.TestBase import BaseTest
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.form_section import ToursFormLocators
-from VOTPUSK_SDET.VOTPUSK.Main.Sliders.sliders_section import SliderSection
+from VOTPUSK.Main.Header.header_info import HeaderLocators
+from VOTPUSK.Main.Config.TestData import TestData
+from VOTPUSK.Main.Title.title import TitleLocator
+from VOTPUSK.Main.test.TestBase import BaseTest
+from VOTPUSK.Main.FieldForms_main.form_section import ToursFormLocators
+from VOTPUSK.Main.Sliders.sliders_section import SliderSection
 
 
 class TestPage(BaseTest):

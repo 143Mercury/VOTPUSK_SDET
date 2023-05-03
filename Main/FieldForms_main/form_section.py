@@ -1,19 +1,19 @@
 import time
 
 from selenium.webdriver.common.by import By
-from VOTPUSK_SDET.VOTPUSK.BaseMethods.object_methods import BaseMethods
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestData import TestData
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.specifide_locators import SpecifiedLocators
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.world_type_locators import WorldTypeLocators
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestDataWorld import TestDataWorld
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.hotel_locators import HotelFormLocators
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestDataHotels import TestDataHotels
+from VOTPUSK.BaseMethods.object_methods import BaseMethods
+from VOTPUSK.Main.Config.TestData import TestData
+from VOTPUSK.Main.FieldForms_main.specifide_locators import SpecifiedLocators
+from VOTPUSK.Main.FieldForms_main.world_type_locators import WorldTypeLocators
+from VOTPUSK.Main.Config.TestDataWorld import TestDataWorld
+from VOTPUSK.Main.FieldForms_main.hotel_locators import HotelFormLocators
+from VOTPUSK.Main.Config.TestDataHotels import TestDataHotels
 from selenium.webdriver.support.ui import WebDriverWait
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.train_locators import TrainLocators
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestDataTrain import TestDataTrain
-from VOTPUSK_SDET.VOTPUSK.Main.Config.TestDataRouts import TestDataRouts
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.routs_locators import RoutsLocators
-from VOTPUSK_SDET.VOTPUSK.Main.FieldForms_main.country_and_cities import CountryAndCities
+from VOTPUSK.Main.FieldForms_main.train_locators import TrainLocators
+from VOTPUSK.Main.Config.TestDataTrain import TestDataTrain
+from VOTPUSK.Main.Config.TestDataRouts import TestDataRouts
+from VOTPUSK.Main.FieldForms_main.routs_locators import RoutsLocators
+from VOTPUSK.Main.FieldForms_main.country_and_cities import CountryAndCities
 
 
 class ToursFormLocators(BaseMethods):

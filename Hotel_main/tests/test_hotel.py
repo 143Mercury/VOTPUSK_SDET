@@ -1,12 +1,11 @@
 import time
-
-from VOTPUSK_SDET.VOTPUSK.Hotel_main.Header.header_locator import HeaderHotelLocator
-from VOTPUSK_SDET.VOTPUSK.Hotel_main.config.configuration import TestData
-from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotel_functionality.form.hotel_func_form import HotelForm
-from VOTPUSK_SDET.VOTPUSK.Hotel_main.hotel_functionality.sliders_and_links_functionality.hotel_sliders_func_links\
+from VOTPUSK.Hotel_main.Header.header_locator import HeaderHotelLocator
+from VOTPUSK.Hotel_main.config.configuration import TestData
+from VOTPUSK.Hotel_main.hotel_functionality.form.hotel_func_form import HotelForm
+from VOTPUSK.Hotel_main.hotel_functionality.sliders_and_links_functionality.hotel_sliders_func_links\
     import\
     SlidersHotelLinksLocator
-from VOTPUSK_SDET.VOTPUSK.Main.test.TestBase import BaseTest
+from VOTPUSK.Main.test.TestBase import BaseTest
 
 
 class TestHotel(BaseTest):
