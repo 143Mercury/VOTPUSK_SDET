@@ -11,5 +11,4 @@ class ArticleHeaderLocator(BaseMethods):
         self.driver = driver
 
     def check_the_article_header_exist(self):
-        time.sleep(5)
         self.is_element_present(ArticleHeaderLocator.HEADER_LOCATOR)

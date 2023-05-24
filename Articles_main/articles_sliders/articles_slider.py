@@ -83,39 +83,42 @@ class ArticlesSliderLocators(BaseMethods):
     POPULAR_ARTICLES_SECTION_15 = (By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[5]/div['
                                              '2]/div[2]')
     POPULAR_ARTICLES_CARD_FOOTER_ICON = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[1]/div/div[2]/div[2]')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[1]/div/div[2]/div[2]')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_1 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[2]/div[1]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[2]/div[1]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_2 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[2]/div[2]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[1]/div[2]/div[2]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_3 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div[2]')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[1]/div/div[2]/div[2]')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_4 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[2]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[2]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_5 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[1]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[1]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_6 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[2]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[2]/div[2]/div[2]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_7 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[1]/div/div[2]/div[2]')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[1]/div/div[2]/div[2]')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_8 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[2]/div[1]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[2]/div[1]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_9 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[2]/div[2]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[3]/div[2]/div[2]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_10 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[1]/div/div[2]/div[2]')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[1]/div/div[2]/div[2]')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_11 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[2]/div[1]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[2]/div[1]/div[2]/div')
     POPULAR_ARTICLES_CARD_FOOTER_ICON_12 = (
-    By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[2]/div[2]/div[2]/div')
+        By.XPATH, '//*[@id="page-header"]/section[4]/div/div/div/div/div/div/div[4]/div[2]/div[2]/div[2]/div')
 
     def __init__(self, driver):
         super().__init__(driver)
         self.driver = driver
 
+    def scroll_into_view(self, s=2):
+        self.window_scroll_by(0, 450)
+        self.sleep(s)
+
     def check_the_pinned_all_topics_button(self):
         self.scroll_page_articles_form()
-        self.sleep(4)
         self.is_element_present(ArticlesSliderLocators.ALL_TOPICS_BUTTON)
 
     def check_the_wrapper_container(self):

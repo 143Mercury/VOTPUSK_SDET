@@ -1,13 +1,19 @@
 import random
 import time
+from bs4 import BeautifulSoup
+import requests
+from datetime import datetime
 from functools import wraps
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, StaleElementReferenceException, \
-    ElementNotInteractableException, ElementNotVisibleException
+    ElementNotInteractableException, ElementNotVisibleException, WebDriverException
 from selenium.webdriver.common.keys import Keys
+from selenium import webdriver
+from PIL import Image, ImageDraw
+
 
 
 class BasePage:
@@ -78,16 +84,37 @@ class BaseMethods(BasePage):
             print(f"Тест пройден не успешно: элемент {by_locator} или элемент вне зоны видимости ")
             print(f"Причина: {str(e)}")
 
-    def assert_element_to_be_clickable(self, by_locator, timeout=15):
+    def assert_element_to_be_clickable(self, by_locator, timeout=15, screenshot_path=None):
         try:
             element = WebDriverWait(self.driver, timeout).until(
                 EC.element_to_be_clickable(by_locator)
             )
             assert element.is_displayed()
             assert element.location_once_scrolled_into_view == element.location
-            print(f"Тест пройден успешно: элемент{by_locator} виден на странице")
+            print(f"Тест пройден успешно: элемент {by_locator} виден на странице")
         except Exception as e:
             print(f"Причина: {str(e)}")
+            if screenshot_path:
+                self.driver.save_screenshot(screenshot_path)
+                element = self.driver.find_element(*by_locator)
+                location = element.location
+                size = element.size
+                screenshot = Image.open(screenshot_path)
+
+                # Создание объекта для рисования
+                draw = ImageDraw.Draw(screenshot)
+
+                # Координаты начала и конца стрелки
+                arrow_start = (location['x'] + size['width'] // 2, location['y'] + size['height'] // 2)
+                arrow_end = (arrow_start[0], arrow_start[1] - 50)
+
+                # Рисование стрелки
+                draw.line([arrow_start, arrow_end], fill='red', width=2)
+                draw.polygon([arrow_end, (arrow_end[0] - 5, arrow_end[1] + 10), (arrow_end[0] + 5, arrow_end[1] + 10)],
+                             fill='red')
+
+                screenshot.save(screenshot_path)
+                print(f"Скриншот сохранен по пути: {screenshot_path}")
 
     def assert_text_visibility(self, text):
         try:
@@ -155,16 +182,16 @@ class BaseMethods(BasePage):
 
         # Ожидание, пока календарь станет видимым
         WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, ".ui-datepicker-calendar"))
+            EC.visibility_of_element_located((By.CSS_SELECTOR, ".calendar"))
         )
 
         # найти все элементы в календаре, имеющие тег "td"
-        day_elements = self.driver.find_elements(By.CSS_SELECTOR, ".ui-datepicker-calendar td")
+        day_elements = self.driver.find_elements(By.CSS_SELECTOR, ".calendar td")
 
         # создать список кликабельных чисел
         enabled_days = []
         for day in day_elements:
-            if "ui-state-disabled" not in day.get_attribute("class"):
+            if "prev__date" not in day.get_attribute("class"):
                 enabled_days.append(day)
 
         # если нет кликабельных чисел, выбросить исключение
@@ -176,7 +203,7 @@ class BaseMethods(BasePage):
         start_time = time.time()
         while not random_day:
             random_day = random.choice(enabled_days)
-            if "ui-state-disabled" in random_day.get_attribute("class"):
+            if "prev__date" in random_day.get_attribute("class"):
                 random_day = None
                 time.sleep(1)
             # Прекратить проверку, если прошло слишком много времени
@@ -205,17 +232,13 @@ class BaseMethods(BasePage):
     def random_country_selection(self, dropdown_country):
         driver = self.driver
         action = ActionChains(driver)
-        enter_pressed = False
-        while True:
+        dropdown = driver.find_element(*dropdown_country)  # Ищем элемент по локатору
+
+        while dropdown.is_displayed():
             action.send_keys(Keys.DOWN).perform()
-            time.sleep(0.5)
-            dropdown = driver.find_element(*dropdown_country)  # Ищем элемент по локатору
-            if not dropdown.is_displayed():
-                break
+            WebDriverWait(driver, 0.5).until(EC.element_to_be_clickable(dropdown_country))
             if random.randint(1, 10) == 3:
-                time.sleep(random.uniform(0.5, 2.0))
                 action.send_keys(Keys.ENTER).perform()
-                enter_pressed = True
                 break
 
     def do_randint_click(self, by_locator, count=5, scroll=False):
@@ -232,10 +255,6 @@ class BaseMethods(BasePage):
                     raise Exception("Было сделано больше 6 кликов по элементу")
             except (StaleElementReferenceException, TimeoutException):
                 pass
-
-    def scroll_page_second(self, scroll_by=125):
-        script = f"window.scrollBy(0, {scroll_by})"
-        self.driver.execute_script(script)
 
     def select_random_widget_item_by_xpath(self, widget, xpath):
         # Находим список элементов виджета
@@ -436,17 +455,25 @@ class BaseMethods(BasePage):
             except TimeoutException:
                 break
 
-    def is_element_present(self, by_locator, timeout=20):
+    def is_element_present(self, by_locator, timeout=20, screenshot_on_fail=True):
         try:
             wait = WebDriverWait(self.driver, timeout)
-            element = wait.until(EC.presence_of_element_located(by_locator))
-            assert element.is_displayed(), f"Элемент {by_locator} найден, но не отображается"
+            element = wait.until(EC.visibility_of_element_located(by_locator))
             assert element.is_enabled(), f"Элемент {by_locator} найден, но не активен"
-            return True
+            return None  # Возвращает None в случае успеха
         except TimeoutException:
-            assert False, f"Элемент {by_locator} не найден за {timeout} секунд"
+            error_msg = f"Элемент {by_locator} не найден за {timeout} секунд"
         except (NoSuchElementException, ElementNotVisibleException):
-            assert False, f"Элемент {by_locator} не найден"
+            error_msg = f"Элемент {by_locator} не найден"
+        except Exception as e:
+            error_msg = f"Произошла ошибка при поиске элемента {by_locator}: {str(e)}"
+
+        if screenshot_on_fail:
+            timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+            screenshot_name = f"screenshot_{timestamp}.png"
+            self.driver.save_screenshot(screenshot_name)
+            error_msg += f"\nСкриншот сохранен: {screenshot_name}"
+        assert False, error_msg
 
     def click_in_loop4(self, locator):
         for i in range(4):
@@ -467,7 +494,7 @@ class BaseMethods(BasePage):
     def is_dropdown_present(self, by_locator):
         try:
             wait = WebDriverWait(self.driver, 10)
-            dropdown = wait.until(EC.presence_of_element_located(by_locator))
+            dropdown = wait.until(EC.visibility_of_element_located(by_locator))
             assert dropdown.is_displayed(), f"Выпадающий список {by_locator} найден, но не отображается"
             return True
         except (NoSuchElementException, TimeoutException):
@@ -552,3 +579,20 @@ class BaseMethods(BasePage):
             print(f"Error while waiting for element {locator}: {e}")
             return None
 
+    def check_buttons_and_links(self):
+        try:
+            buttons = self.driver.find_elements_by_tag_name("button")
+            links = self.driver.find_elements_by_tag_name("a")
+            elements = buttons + links
+
+            for element in elements:
+                href = element.get_attribute("href") or element.get_attribute("data-href")
+
+                if href:
+                    response = requests.head(href, allow_redirects=True)
+
+                    if 400 <= response.status_code <= 599:
+                        print(f"Element '{element.text.strip()}' leads to an error page: {response.status_code} - {href}")
+
+        except NoSuchElementException:
+            print("No buttons or links found on the page")
